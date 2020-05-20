@@ -47,11 +47,13 @@ class IntroPage extends StatelessWidget {
                         color: lightYellow,
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChangeNotifierProvider<Events>(
-                                    create: (context) => Events(),
-                                    child: Schedule())));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider<Events>(
+                              create: (context) => Events(),
+                              child: Schedule(),
+                            )),
+                          );
                         },
                         child: Text(
                           'Login',

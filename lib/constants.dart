@@ -19,7 +19,7 @@ const eventInputPadding = EdgeInsets.symmetric(horizontal: 30, vertical: 10);
 const Color grey = Color(0xFFccced1);
 
 BoxDecoration eventContainer =
-    BoxDecoration(borderRadius: BorderRadius.circular(10), color: grey);
+    BoxDecoration( color: grey);
 
 Container bullet = Container(height: 10, width: 10, padding: EdgeInsets.all(8.0), decoration: BoxDecoration(shape: BoxShape.circle, color: lightYellow),);
 
