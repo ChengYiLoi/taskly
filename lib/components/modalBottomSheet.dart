@@ -1,48 +1,74 @@
 import 'package:flutter/material.dart';
+
+import 'package:taskly/components/Event.dart';
 import 'package:taskly/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taskly/components/EventInput.dart';
 import 'package:taskly/components/EventNotes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
-var eventDescription = 'What is the event?';
-
 class EventBottomSheet extends StatefulWidget {
-  EventBottomSheet(this.createEvent);
-  final Function createEvent;
-  
+  EventBottomSheet(
+      {@required this.mainFunction, @required this.type, this.event});
+  final Function mainFunction;
+  final String type;
+  final Event event;
+  final Widget clock = SvgPicture.asset('images/clock.svg');
+  final Widget pencil = SvgPicture.asset('images/pencil.svg');
 
   @override
   _EventBottomSheetState createState() => _EventBottomSheetState();
 }
 
 class _EventBottomSheetState extends State<EventBottomSheet> {
-  final Widget clock = SvgPicture.asset('images/clock.svg');
-
-  final Widget pencil = SvgPicture.asset('images/pencil.svg');
+  var eventDescription = 'What is the event?';
 
   final TextEditingController eventDescriptionController =
       TextEditingController();
   List notes = [];
+  TimeOfDay time;
 
   @override
-  void dispose(){
+  void initState(){
+    super.initState();
+    if(widget.type == 'update'){
+       eventDescriptionController..text = widget.event.getDescription();
+    }
+   
+  }
+
+  @override
+  void dispose() {
     eventDescriptionController.dispose();
+    
     super.dispose();
   }
+
   Widget build(BuildContext context) {
-   
-    var time = TimeOfDay.now().format(context);
+    time = widget.type == 'create' ?  TimeOfDay.now() : widget.event.getTime();
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setModalState) {
+      void onButtonPressed() {
+        
+        if (widget.type == 'create') {
+          widget.mainFunction(eventDescriptionController.text, time, notes);
+        } else {
+          Navigator.pop(context);
+          String currentDescription = widget.event.getDescription();
+          widget.mainFunction(
+              currentDescription, eventDescriptionController.text, time, notes);
+              
+        }
+        
+      }
+
       void setTime() async {
         //updates the selected time
         var result = await showTimePicker(
             context: context, initialTime: TimeOfDay.now());
         setModalState(() {
           if (result != null) {
-            time = result.format(context);
+            time = result;
           }
         });
       }
@@ -52,6 +78,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
             context: context,
             builder: (BuildContext context) {
               TextEditingController noteController = TextEditingController();
+              
               return AlertDialog(
                 title: Center(
                   child: Text('Note'),
@@ -79,6 +106,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
             });
       }
 
+      
       return Container(
         height: MediaQuery.of(context).size.height * 0.55,
         child: Stack(children: <Widget>[
@@ -92,7 +120,6 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                 child: ListView(
                   children: <Widget>[
                     //emoji selector
-                  
 
                     //event text
                     Padding(
@@ -112,12 +139,13 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                       ),
                     ),
                     //time selector
-                    EventInput(clock, 'Set a time', time,
+                    EventInput(widget.clock, 'Set a time', time.format(context),
                         setTime), //icon , inputDisplay, function
-                    EventInput(pencil, 'Add notes', 'Add +', displayAlertBox),
-                    notes.length > 0
-                        ? EventNotes(notes)
-                        : SizedBox(),
+                    EventInput(
+                        widget.pencil, 'Add notes', 'Add +', displayAlertBox),
+                    widget.type == 'create'
+                        ? (notes.length > 0 ? EventNotes(notes) : SizedBox())
+                        : EventNotes(widget.event.getNotes()),
 
                     // note adder
 
@@ -128,12 +156,13 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         color: lightYellow,
-                        onPressed: () => widget.createEvent(
-                            eventDescriptionController.text, time, notes),
+                        onPressed: () => onButtonPressed(),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
-                            'Create event',
+                            widget.type == 'create'
+                                ? 'Create event'
+                                : 'Update event',
                             style: mainActionButtonText,
                           ),
                         ),

@@ -5,13 +5,20 @@ import 'package:taskly/classes/Events.dart';
 import 'package:taskly/constants.dart';
 import 'eventDeleteButton.dart';
 import 'eventEditButton.dart';
+import 'modalBottomSheet.dart';
 
 class Event extends StatefulWidget {
   final String _eventDescription;
-  final String _time;
+  final TimeOfDay _time;
   final List _notes;
-  Event(this._eventDescription, this._time, this._notes)
-      : super(key: ValueKey(_eventDescription));
+  final Key _key;
+  Event(this._eventDescription, this._time, this._notes, this._key)
+      : super(key: _key);
+
+  String getDescription() => _eventDescription;
+  TimeOfDay getTime() => _time;
+  List getNotes() => _notes;
+  Key getKey() => _key;
 
   @override
   _EventState createState() => _EventState();
@@ -23,7 +30,13 @@ class _EventState extends State<Event> {
 
   @override
   Widget build(BuildContext context) {
-    events = Provider.of<Events>(context);
+    Events events = Provider.of<Events>(context, listen: false);
+    void updateEvent(currentDescription, newDescription, time, notes) {
+      Key key = widget._key;
+      events.update(key,newDescription ,Event(newDescription, time, notes, key));
+    
+    }
+
     List<Widget> textNotes = widget._notes
         .map((note) => SizedBox(
             height: 20,
@@ -41,7 +54,24 @@ class _EventState extends State<Event> {
       child: Slidable(
         actionExtentRatio: 0.15,
         actionPane: SlidableBehindActionPane(),
-        actions: <Widget>[eventEditButton()],
+        actions: <Widget>[
+          GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (context) {
+                      Event currentEvent = events.events[widget._key.toString()];
+
+                      return EventBottomSheet(
+                          mainFunction: updateEvent,
+                          type: 'update',
+                          event: currentEvent
+                         );
+                    });
+              },
+              child: eventEditButton())
+        ],
         secondaryActions: <Widget>[
           GestureDetector(
               onTap: () {
@@ -68,7 +98,7 @@ class _EventState extends State<Event> {
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: Text(
-                            widget._time,
+                            widget._time.format(context),
                             style: eventTime,
                           ),
                         ),

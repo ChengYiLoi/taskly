@@ -29,6 +29,7 @@ class _ScheduleState extends State<Schedule> {
         widget._formattedDate.format(date) + ' ' + date.day.toString();
 
     void createEvent(String eventDescription, time, List notes) {
+      print(eventDescription);
       setState(() {
         if (eventDescription != '') {
           events.add(eventDescription, time, notes);
@@ -42,7 +43,7 @@ class _ScheduleState extends State<Schedule> {
           isScrollControlled: true,
           context: context,
           builder: (context) {
-            return EventBottomSheet(createEvent);
+            return EventBottomSheet(mainFunction: createEvent, type: 'create');
           });
     }
 
@@ -66,7 +67,13 @@ class _ScheduleState extends State<Schedule> {
                   style: scheduleDate,
                 ),
                 events.events.length > 0
-                    ? Consumer<Events>(builder: (_, events,__) => Expanded(child: SingleChildScrollView(child: Column(children: events.getEvents()))),)
+                    ? Consumer<Events>(
+                        builder: (_, events, __) => Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(children: events.getEvents()),
+                          ),
+                        ),
+                      )
                     : SizedBox(),
               ],
             ),
