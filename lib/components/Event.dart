@@ -25,7 +25,6 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
-  Color myColor;
   Events events;
 
   @override
@@ -47,7 +46,7 @@ class _EventState extends State<Event> {
               ),
               Expanded(child: Text(note))
             ])))
-        .toList();
+        .toList(); // maps through the notes array to return a list of row widgets
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -73,9 +72,9 @@ class _EventState extends State<Event> {
               child: eventEditButton())
         ],
         secondaryActions: <Widget>[
-          GestureDetector(
+          GestureDetector(// removes the selected event
               onTap: () {
-                events.remove(widget._eventDescription);
+                events.remove(widget._key.toString());
               },
               child: eventDeleteButton())
         ],

@@ -9,27 +9,22 @@ import 'package:taskly/components/bottomAppBar.dart';
 
 class Schedule extends StatefulWidget {
   final DateFormat _formattedDate = DateFormat('EEEE');
+  final date = DateTime.now();
+    
   @override
   _ScheduleState createState() => _ScheduleState();
 }
 
 class _ScheduleState extends State<Schedule> {
   Events events;
-  var date;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final String currentDate =
+        widget._formattedDate.format(widget.date) + ' ' + widget.date.day.toString();
     events = Provider.of<Events>(context, listen: false);
-    date = DateTime.now();
-    String currentDate =
-        widget._formattedDate.format(date) + ' ' + date.day.toString();
-
+   
     void createEvent(String eventDescription, time, List notes) {
-      print(eventDescription);
       setState(() {
         if (eventDescription != '') {
           events.add(eventDescription, time, notes);
@@ -38,7 +33,7 @@ class _ScheduleState extends State<Schedule> {
       });
     }
 
-    void onButtonPressed() {
+    void displayBottomSheet() {
       showModalBottomSheet(
           isScrollControlled: true,
           context: context,
@@ -74,7 +69,12 @@ class _ScheduleState extends State<Schedule> {
                           ),
                         ),
                       )
-                    : SizedBox(),
+                    : Expanded(
+                        child: Container(
+                        child: Center(
+                          child: Text('You have no events today',style: scheduleTitleText),
+                        ),
+                      )),
               ],
             ),
           ),
@@ -82,7 +82,7 @@ class _ScheduleState extends State<Schedule> {
         bottomNavigationBar: BuildBottomAppBar(),
         floatingActionButton: FloatingActionButton(
           backgroundColor: lightYellow,
-          onPressed: () => onButtonPressed(),
+          onPressed: () => displayBottomSheet(),
           child: FaIcon(
             FontAwesomeIcons.plus,
             color: Colors.white,

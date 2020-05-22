@@ -2,34 +2,74 @@ import 'package:flutter/material.dart';
 import 'package:taskly/constants.dart';
 
 class EventNotes extends StatelessWidget {
-  EventNotes(this.notes);
+  EventNotes(this._notes, this._updateNotes);
 
-  final List notes;
+  final List _notes;
+  final Function _updateNotes;
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> notesList = notes
-        .map(
-          (note) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: <Widget>[
-                bullet,
-                SizedBox(width: 6,),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      note,
-                      style: noteText,
+    List<Widget> notesList = [];
+    Map notesMap = _notes.asMap();
+    notesMap.forEach((index, note) {
+      notesList.add(
+        Dismissible(
+            key: ValueKey(note),
+            onDismissed: (direction){
+             _updateNotes(index);
+            },
+                      child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: <Widget>[
+                  bullet,
+                  SizedBox(width: 6,),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        note,
+                        style: noteText,
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-        )
-        .toList();
+          )
+      );
+    });
+    // List<Widget> notesList = widget.notes
+    //     .map(
+    //       (note) => Dismissible(
+    //         key: ValueKey(note),
+    //         onDismissed: (direction){
+    //           setState(() {
+
+    //           });
+    //         },
+    //                   child: Padding(
+    //           padding: const EdgeInsets.all(8.0),
+    //           child: Row(
+    //             children: <Widget>[
+    //               bullet,
+    //               SizedBox(width: 6,),
+    //               Expanded(
+    //                 child: Align(
+    //                   alignment: Alignment.centerLeft,
+    //                   child: Text(
+    //                     note,
+    //                     style: noteText,
+    //                   ),
+    //                 ),
+    //               )
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     )
+    //     .toList();
+
     return Padding(
       padding: eventInputPadding,
       child: Container(
@@ -41,6 +81,8 @@ class EventNotes extends StatelessWidget {
     );
   }
 }
+
+
 
 // ListView.builder(
 //           physics: NeverScrollableScrollPhysics(),
