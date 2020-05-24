@@ -4,6 +4,10 @@ import 'package:taskly/components/Event.dart';
 class Events with ChangeNotifier {
   Map<String, Widget> events = {};
 
+  int getLength(){
+    return events.length;
+  }
+
   List bubbleSort(List events) {
     int convertTime(time){
       dynamic result;
@@ -44,23 +48,25 @@ class Events with ChangeNotifier {
     Key key = UniqueKey();
     events[key.toString()] = Event(eventDescription, time, notes, key);
     notifyListeners();
+   
   }
 
   void update(currentKey, newDescription, newEvent) {
     events[currentKey.toString()] = newEvent;
     notifyListeners();
+   
   }
 
   List<Widget> getEvents() {
     List<Widget> eventList = events.values.toList();
-
     List<Widget> sortList = bubbleSort(eventList);
-
+   
     return sortList;
   }
 
   void remove(key) {
     events.remove(key);
     notifyListeners();
+    
   }
 }

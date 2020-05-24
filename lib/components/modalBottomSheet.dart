@@ -45,7 +45,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
   updateSelector() {
     var scrollValue = _scrollController.offset.round();
     print(scrollValue);
-    setState(() {
+ 
       if (scrollValue >= 25) {
         topValue = 50;
         buttonRadius = BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10));
@@ -53,7 +53,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
         topValue = 30;
         buttonRadius = BorderRadius.all(Radius.circular(50));
       }
-    });
+  
   }
 
   @override

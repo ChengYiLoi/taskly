@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-const lightYellow = Color(0xFFF8D57E);
+const Color lightYellow = Color(0xFFF8D57E);
+const Color grey = Color(0xFFccced1);
 
 const mainActionButtonText = TextStyle(fontSize: 26);
 
@@ -16,7 +17,7 @@ const inputDescription = TextStyle(fontSize: 22);
 
 const eventInputPadding = EdgeInsets.symmetric(horizontal: 30, vertical: 10);
 
-const Color grey = Color(0xFFccced1);
+
 
 BoxDecoration eventContainer =
     BoxDecoration( color: grey);

@@ -29,7 +29,7 @@ class _EventState extends State<Event> {
 
   @override
   Widget build(BuildContext context) {
-    Events events = Provider.of<Events>(context, listen: false);
+    Events events = Provider.of<Events>(context);
     void updateEvent(currentDescription, newDescription, time, notes) {
       Key key = widget._key;
       events.update(key,newDescription ,Event(newDescription, time, notes, key));

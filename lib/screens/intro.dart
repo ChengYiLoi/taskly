@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taskly/classes/Events.dart';
+import 'package:taskly/classes/User.dart';
 import 'package:taskly/constants.dart';
 import 'package:taskly/screens/schedule.dart';
 
@@ -48,11 +49,7 @@ class IntroPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => ChangeNotifierProvider<Events>(
-                              create: (context) => Events(),
-                              child: Schedule(),
-                            )),
+                            MaterialPageRoute(builder: (context) => Schedule()),
                           );
                         },
                         child: Text(
@@ -60,6 +57,14 @@ class IntroPage extends StatelessWidget {
                           style: mainActionButtonText,
                         ),
                       )),
+                ),
+              ),
+              Expanded(
+                child: RaisedButton(
+                  onPressed: () {
+                    Provider.of<User>(context, listen: false).createFutureEvent();
+                  },
+                  child: Text('Create future event'),
                 ),
               ),
               Expanded(
