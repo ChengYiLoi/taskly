@@ -17,8 +17,6 @@ const inputDescription = TextStyle(fontSize: 22);
 
 const eventInputPadding = EdgeInsets.symmetric(horizontal: 30, vertical: 10);
 
-
-
 BoxDecoration eventContainer =
     BoxDecoration( color: grey);
 
@@ -26,3 +24,8 @@ Container bullet = Container(height: 10, width: 10, padding: EdgeInsets.all(8.0)
 
 const eventTitle = TextStyle(fontSize: 30);
 const eventTime = TextStyle(fontSize: 20);
+
+const calendarButtonText = TextStyle(fontSize: 20);
+
+const alertDialogbuttonText = TextStyle(fontSize:  20);
+const alertDialogOptionsPadding = EdgeInsets.all(10.0);

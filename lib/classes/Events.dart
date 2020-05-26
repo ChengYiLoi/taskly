@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:taskly/components/Event.dart';
 
 class Events with ChangeNotifier {
-  Map<String, Widget> events = {};
+  DateTime _initializedDate;
+  Map<String, Widget> _events = {};
+
+  Events(this._initializedDate);
 
   int getLength(){
-    return events.length;
+    return _events.length;
   }
+
+  DateTime getInitializedDate() => _initializedDate;
+
+  Event getEvent(String key) => _events[key];
 
   List bubbleSort(List events) {
     int convertTime(time){
@@ -46,26 +53,26 @@ class Events with ChangeNotifier {
 
   void add(eventDescription, time, notes) {
     Key key = UniqueKey();
-    events[key.toString()] = Event(eventDescription, time, notes, key);
+    _events[key.toString()] = Event(eventDescription, time, notes, key);
     notifyListeners();
    
   }
 
   void update(currentKey, newDescription, newEvent) {
-    events[currentKey.toString()] = newEvent;
+    _events[currentKey.toString()] = newEvent;
     notifyListeners();
    
   }
 
   List<Widget> getEvents() {
-    List<Widget> eventList = events.values.toList();
+    List<Widget> eventList = _events.values.toList();
     List<Widget> sortList = bubbleSort(eventList);
    
     return sortList;
   }
 
   void remove(key) {
-    events.remove(key);
+    _events.remove(key);
     notifyListeners();
     
   }

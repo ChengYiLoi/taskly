@@ -10,7 +10,9 @@ import 'package:taskly/components/bottomAppBar.dart';
 
 class Schedule extends StatefulWidget {
   final DateFormat _formattedDate = DateFormat('EEEE');
-  final date = DateTime.now();
+  final DateTime _date;
+
+  Schedule(this._date);
 
   @override
   _ScheduleState createState() => _ScheduleState();
@@ -21,23 +23,24 @@ class _ScheduleState extends State<Schedule> {
 
   @override
   Widget build(BuildContext context) {
-    final String currentFullDate = widget.date.day.toString() +
-        widget.date.month.toString() +
-        widget.date.year.toString();
-    final String currentDate = widget._formattedDate.format(widget.date) +
+
+    final String currentDate = widget._formattedDate.format(widget._date) +
         ' ' +
-        widget.date.day.toString();
+        widget._date.day.toString();
 
     User user = Provider.of<User>(context);
 
-    if (user.scheduleExist(currentFullDate)) {
-      events = user.getSchedule(currentFullDate);
+    if (user.scheduleExist(widget._date)) {
+      events = user.getSchedule(widget._date);
     } else {
-      user.createSchedule(currentFullDate);
-      events = user.getSchedule(currentFullDate);
+      events = Events(DateTime.now());
     }
 
     void createEvent(String eventDescription, time, List notes) {
+      if(events.getLength() == 0){
+        user.createSchedule(widget._date, events);
+      }
+
       setState(() {
         if (eventDescription != '') {
           events.add(eventDescription, time, notes);
@@ -55,56 +58,95 @@ class _ScheduleState extends State<Schedule> {
           });
     }
 
-    return ChangeNotifierProvider<Events>(
-      create: (context) => events,
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: SafeArea(
-              child: Consumer<Events>(builder: (_, events, __) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Text(
-                      'Today\'s schedule',
-                      style: scheduleTitleText,
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      currentDate,
-                      style: scheduleDate,
-                    ),
-                    events.events.length > 0
-                        ? Expanded(
-                            child: SingleChildScrollView(
-                                child: Column(children: events.getEvents())),
-                          )
-                        : Expanded(
-                            child: Container(
-                            child: Center(
-                              child: Text('You have no events today',
-                                  style: scheduleTitleText),
-                            ),
-                          )),
-                  ],
-                );
-              }),
+    Future<bool> _onBackPressed() {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text('Do you want to exit the App?'),
+          actions: <Widget>[
+            Padding(
+              padding: alertDialogOptionsPadding,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).pop(false),
+                child: Text(
+                  'No',
+                  style: alertDialogbuttonText,
+                ),
+              ),
             ),
-          ),
-          bottomNavigationBar: BuildBottomAppBar(),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: lightYellow,
-            onPressed: () => displayBottomSheet(),
-            child: FaIcon(
-              FontAwesomeIcons.plus,
-              color: Colors.white,
+            Padding(
+              padding: alertDialogOptionsPadding,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).pop(true),
+                child: Text(
+                  'Yes',
+                  style: alertDialogbuttonText,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: events,),
+        ChangeNotifierProvider.value(value: user,)
+      ],
+          child: WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: SafeArea(
+                child: Consumer<Events>(builder: (_, events, __) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(
+                        widget._date.day == DateTime.now().day ? 'Today\'s schedule' : 'Schedule for',
+                        style: scheduleTitleText,
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        currentDate,
+                        style: scheduleDate,
+                      ),
+                      events.getLength() > 0
+                          ? Expanded(
+                              child: SingleChildScrollView(
+                                  child: Provider<DateTime>(
+                                    create: (context) => widget._date,
+                                    child: Column(children: events.getEvents()))),
+                            )
+                          : Expanded(
+                              child: Container(
+                              child: Center(
+                                child: Text(widget._date.day == DateTime.now().day ? 'You have no events today' : 'No events planned',
+                                    style: scheduleTitleText),
+                              ),
+                            )),
+                    ],
+                  );
+                }),
+              ),
             ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked),
+            bottomNavigationBar: BuildBottomAppBar(),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: lightYellow,
+              onPressed: () => displayBottomSheet(),
+              child: FaIcon(
+                FontAwesomeIcons.plus,
+                color: Colors.white,
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:taskly/classes/Events.dart';
+import 'package:taskly/classes/User.dart';
 import 'package:taskly/constants.dart';
 import 'eventDeleteButton.dart';
 import 'eventEditButton.dart';
@@ -29,11 +30,13 @@ class _EventState extends State<Event> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime date = Provider.of<DateTime>(context, listen: false);
+    User user = Provider.of<User>(context);
     Events events = Provider.of<Events>(context);
     void updateEvent(currentDescription, newDescription, time, notes) {
       Key key = widget._key;
-      events.update(key,newDescription ,Event(newDescription, time, notes, key));
-    
+      events.update(
+          key, newDescription, Event(newDescription, time, notes, key));
     }
 
     List<Widget> textNotes = widget._notes
@@ -60,21 +63,26 @@ class _EventState extends State<Event> {
                     isScrollControlled: true,
                     context: context,
                     builder: (context) {
-                      Event currentEvent = events.events[widget._key.toString()];
+                      Event currentEvent =
+                          events.getEvent(widget._key.toString());
 
                       return EventBottomSheet(
                           mainFunction: updateEvent,
                           type: 'update',
-                          event: currentEvent
-                         );
+                          event: currentEvent);
                     });
               },
               child: eventEditButton())
         ],
         secondaryActions: <Widget>[
-          GestureDetector(// removes the selected event
+          GestureDetector(
+              // removes the selected event
               onTap: () {
-                events.remove(widget._key.toString());
+                if (events.getLength() == 1) {
+                  user.removeSchedule(date);
+                } else {
+                  events.remove(widget._key.toString());
+                }
               },
               child: eventDeleteButton())
         ],

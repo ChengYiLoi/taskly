@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:taskly/classes/Events.dart';
 import 'package:taskly/classes/User.dart';
 import 'package:taskly/constants.dart';
 import 'package:taskly/screens/schedule.dart';
@@ -47,9 +46,11 @@ class IntroPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)),
                         color: lightYellow,
                         onPressed: () {
+                          DateTime date = DateTime.now();
+                          Navigator.pop(context);
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Schedule()),
+                            MaterialPageRoute(builder: (context) => Schedule(date)),
                           );
                         },
                         child: Text(
