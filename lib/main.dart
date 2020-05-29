@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taskly/classes/User.dart';
 import 'package:taskly/constants.dart';
+import 'classes/ThemeChanger.dart';
 import 'screens/intro.dart';
-
 
 void main() => runApp(MyApp());
 
@@ -13,19 +13,32 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<User>(create: (_) =>User()),
+        ChangeNotifierProvider<User>(create: (_) => User()),
+        ChangeNotifierProvider<ThemeChanger>(
+            create: (_) => ThemeChanger(Brightness.light))
       ],
-          child: MaterialApp(
-           
-        title: 'Flutter Demo',
-        theme: ThemeData(
-            fontFamily: 'LilitaOne',
-            primaryColor: lightYellow,
-            accentColor: lightYellow,
-            bottomSheetTheme:
-                BottomSheetThemeData(backgroundColor: Colors.transparent)),
-        home: Intro(),
+      child: Consumer<ThemeChanger>(
+        builder: (context, themeChanger, child){
+          return  MaterialApp(
+          theme: ThemeData(
+              fontFamily: 'LilitaOne',
+              brightness: themeChanger.getTheme(),
+              primaryColor: lightYellow,
+              accentColor: lightYellow,
+              bottomSheetTheme:
+                  BottomSheetThemeData(modalBackgroundColor: Colors.transparent)),
+          home: Intro(),
+        );
+        },
       ),
     );
   }
 }
+
+//  fontFamily: 'LilitaOne',
+
+//             brightness: Brightness.dark,
+//             primaryColor: lightYellow,
+//             accentColor: lightYellow,
+//             bottomSheetTheme: BottomSheetThemeData(
+//               modalBackgroundColor: Colors.transparent,

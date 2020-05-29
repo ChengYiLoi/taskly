@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 const Color lightYellow = Color(0xFFF8D57E);
-const Color grey = Color(0xFFccced1);
 
+const Color darkYellow = Color(0xFFd66a06);
+const Color grey = Color(0xFFccced1);
+const Color darkGrey = Color(0xFFb2afad);
 const mainActionButtonText = TextStyle(fontSize: 26);
 
-const mainScreenTitleText = TextStyle(color: Colors.black, fontSize: 50.0);
-const descriptionText = TextStyle(color: Color(0xFF959595), fontSize: 16);
+const mainScreenTitleText = TextStyle( fontSize: 50.0);
+const descriptionText = TextStyle( fontSize: 16);
 
 const scheduleTitleText = TextStyle(fontSize: 28);
 const scheduleDate = TextStyle(color: lightYellow, fontSize: 28);

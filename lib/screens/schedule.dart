@@ -153,6 +153,7 @@ class _ScheduleState extends State<Schedule> {
         onWillPop: _onBackPressed,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
+            
             body: Padding(
               padding: const EdgeInsets.all(30.0),
               child: SafeArea(
@@ -160,11 +161,14 @@ class _ScheduleState extends State<Schedule> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Text(
-                        widget._date.day == DateTime.now().day
-                            ? 'Today\'s schedule'
-                            : 'Schedule for',
-                        style: scheduleTitleText,
+                      Title(
+                        color: Colors.white,
+                        child: Text(
+                          widget._date.day == DateTime.now().day
+                              ? 'Today\'s schedule'
+                              : 'Schedule for',
+                          style: scheduleTitleText,
+                        ),
                       ),
                       SizedBox(
                         height: 8,

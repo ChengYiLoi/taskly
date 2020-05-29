@@ -3,9 +3,11 @@ import 'package:taskly/constants.dart';
 import 'package:taskly/screens/schedule.dart';
 
 class Intro extends StatelessWidget {
+ 
   final String bottomIllustration = 'images/mainPageIllustration.svg';
   @override
   Widget build(BuildContext context) {
+     ThemeData themeData = Theme.of(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -42,7 +44,7 @@ class Intro extends StatelessWidget {
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
-                        color: lightYellow,
+                        color: themeData.brightness == Brightness.light ? lightYellow : darkYellow ,
                         onPressed: () {
                           DateTime date = DateTime.now();
                           Navigator.pop(context);
@@ -63,8 +65,12 @@ class Intro extends StatelessWidget {
                 flex: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Image(
-                    image: AssetImage('images/introPageIllustration.png'),
+                  child: Container(
+                 
+                    child: Image(
+                      color: themeData.brightness == Brightness.light ? null : darkGrey,
+                      image: AssetImage('images/introPageIllustration.png'),
+                    ),
                   ),
                 ),
               ),

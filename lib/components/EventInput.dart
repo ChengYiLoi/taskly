@@ -11,6 +11,7 @@ class EventInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
     return GestureDetector(
       onTap: () {
         inputFunction();
@@ -20,7 +21,7 @@ class EventInput extends StatelessWidget {
         child: Container(
           height: 80,
           decoration: BoxDecoration(
-              color: lightYellow,
+              color: themeData.brightness == Brightness.light ? lightYellow : darkGrey,
               borderRadius: BorderRadius.circular(20)),
           child: Padding(
             padding: const EdgeInsets.all(20.0),

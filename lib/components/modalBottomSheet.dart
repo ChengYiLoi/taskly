@@ -147,6 +147,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
   }
 
   Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
     void onButtonPressed() {
       if (widget.type == 'create') {
         widget.mainFunction(eventDescriptionController.text, time, notes);
@@ -244,6 +245,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
     }
 
     return Container(
+
       height: MediaQuery.of(context).size.height *
           0.55, // obtains the device height and sets the container height to be 55% of the device height
       child: Stack(children: <Widget>[
@@ -256,7 +258,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20), topRight: Radius.circular(20)),
               child: Container(
-                color: Colors.white,
+                color: themeData.brightness == Brightness.light ? Colors.white: Colors.grey[800],
                 child: ListView(
                   controller: _scrollController,
                   children: <Widget>[
@@ -265,9 +267,11 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                       child: Align(
                         alignment: Alignment.center,
                         child: TextField(
+                      
                           controller: eventDescriptionController,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
+                          
                               border: InputBorder.none,
                               hintText: 'What is the event?'),
                         ),
