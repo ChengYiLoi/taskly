@@ -3,17 +3,7 @@ import 'Events.dart';
 
 class User with ChangeNotifier {
   Map<String, Events> datesWithEvents = {};
-
-  void createFutureEvent() {
-    Events futureEvent = Events(DateTime.now().add(Duration(days: 2)));
-    futureEvent.add('smoke weed', TimeOfDay.now(), ['smoke', 'weed']);
-    DateTime date = futureEvent.getInitializedDate();
-    datesWithEvents[date.day.toString() +
-        date.month.toString() +
-        date.year.toString()] = futureEvent;
-    print('created future event');
-  }
-
+  
   Map getDatesWithEvents() {
     return datesWithEvents;
   }

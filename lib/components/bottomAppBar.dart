@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:taskly/screens/calender.dart';
+import 'package:taskly/screens/settings.dart';
 
 class BuildBottomAppBar extends StatelessWidget {
   @override
@@ -22,8 +23,11 @@ class BuildBottomAppBar extends StatelessWidget {
               icon: FaIcon(FontAwesomeIcons.calendarAlt), // calender
             ),
             IconButton(
-              onPressed: () {},
-              icon: FaIcon(FontAwesomeIcons.clock), // clock
+              onPressed: () {
+                 Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Settings()));
+              },
+              icon: FaIcon(FontAwesomeIcons.cog), // clock
             )
           ],
         ),

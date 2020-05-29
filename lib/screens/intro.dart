@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:taskly/classes/User.dart';
 import 'package:taskly/constants.dart';
 import 'package:taskly/screens/schedule.dart';
 
-class IntroPage extends StatelessWidget {
+class Intro extends StatelessWidget {
   final String bottomIllustration = 'images/mainPageIllustration.svg';
   @override
   Widget build(BuildContext context) {
@@ -60,20 +58,13 @@ class IntroPage extends StatelessWidget {
                       )),
                 ),
               ),
-              Expanded(
-                child: RaisedButton(
-                  onPressed: () {
-                    Provider.of<User>(context, listen: false).createFutureEvent();
-                  },
-                  child: Text('Create future event'),
-                ),
-              ),
+             
               Expanded(
                 flex: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Image(
-                    image: AssetImage('images/mainPageIllustration.png'),
+                    image: AssetImage('images/introPageIllustration.png'),
                   ),
                 ),
               ),

@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:taskly/classes/Events.dart';
 import 'package:taskly/classes/User.dart';
 import 'package:taskly/constants.dart';
+
 import 'eventDeleteButton.dart';
 import 'eventEditButton.dart';
 import 'modalBottomSheet.dart';
@@ -27,6 +29,14 @@ class Event extends StatefulWidget {
 
 class _EventState extends State<Event> {
   Events events;
+
+
+  @override
+  void initState(){
+
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +79,9 @@ class _EventState extends State<Event> {
                       return EventBottomSheet(
                           mainFunction: updateEvent,
                           type: 'update',
-                          event: currentEvent);
+                          event: currentEvent,
+                          
+                          );
                     });
               },
               child: eventEditButton())

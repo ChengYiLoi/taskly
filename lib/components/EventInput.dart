@@ -29,7 +29,7 @@ class EventInput extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Expanded(child: icon), // emoji image
-                Expanded(
+                description != '' ? Expanded(
                   flex: 4,
                   child: Center(
                     child: Text(
@@ -37,7 +37,7 @@ class EventInput extends StatelessWidget {
                       style: inputDescription,
                     ),
                   ),
-                ),
+                ) : SizedBox(),
                 Expanded(
                   flex: 4,
                   child: Center(

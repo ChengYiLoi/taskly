@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<User>(create: (_) =>User()),
       ],
           child: MaterialApp(
+           
         title: 'Flutter Demo',
         theme: ThemeData(
             fontFamily: 'LilitaOne',
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
             accentColor: lightYellow,
             bottomSheetTheme:
                 BottomSheetThemeData(backgroundColor: Colors.transparent)),
-        home: IntroPage(),
+        home: Intro(),
       ),
     );
   }
