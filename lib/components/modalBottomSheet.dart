@@ -150,7 +150,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
     void onButtonPressed() {
       if (widget.type == 'create') {
         widget.mainFunction(eventDescriptionController.text, time, notes);
-        scheduleNotification(reminderOption.getDescription(), time, eventDescriptionController.text);
+        
       } else {
         
         Navigator.pop(context);
@@ -158,6 +158,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
         widget.mainFunction(
             currentDescription, eventDescriptionController.text, time, notes);
       }
+      scheduleNotification(reminderOption.getDescription(), time, eventDescriptionController.text);
       
     }
 
@@ -203,7 +204,10 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
             );
           });
       setState(() {
-        reminderOption = reminderOptions[result];
+        if(result != null){
+           reminderOption = reminderOptions[result];
+        }
+       
       });
     }
 

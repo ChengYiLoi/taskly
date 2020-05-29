@@ -25,15 +25,15 @@ class Schedule extends StatefulWidget {
 class _ScheduleState extends State<Schedule> {
   Events events;
 
-   FlutterLocalNotificationsPlugin notificationsPlugin =
+  FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
   var initializationSettingsAndroid;
   var initializationSettingsIOS;
   var initializationSettings;
 
   @override
-  void initState(){
-     initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  void initState() {
+    initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
     initializationSettingsIOS = IOSInitializationSettings(
         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     initializationSettings = InitializationSettings(
@@ -43,13 +43,14 @@ class _ScheduleState extends State<Schedule> {
     super.initState();
   }
 
-    Future onSelectNotification(String payload) async {
+  Future onSelectNotification(String payload) async {
     if (payload != null) {
       debugPrint('Notification payload: $payload');
     }
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => EventReminder()));
   }
+
   Future onDidReceiveLocalNotification(
       int id, String title, String body, String payload) async {
     await showDialog(
@@ -70,8 +71,6 @@ class _ScheduleState extends State<Schedule> {
             ));
   }
 
-   
-
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
@@ -84,17 +83,13 @@ class _ScheduleState extends State<Schedule> {
         ' ' +
         widget._date.day.toString();
 
-    
-
     void createEvent(String eventDescription, time, List notes) {
       if (events.getLength() == 0) {
         user.createSchedule(widget._date, events);
-        
       }
 
       setState(() {
         if (eventDescription != '') {
-          
           events.add(eventDescription, time, notes);
           Navigator.pop(context);
         }
@@ -106,7 +101,11 @@ class _ScheduleState extends State<Schedule> {
           isScrollControlled: true,
           context: context,
           builder: (context) {
-            return EventBottomSheet(mainFunction: createEvent, type: 'create', notificationsPlugin: notificationsPlugin,);
+            return EventBottomSheet(
+              mainFunction: createEvent,
+              type: 'create',
+              notificationsPlugin: notificationsPlugin,
+            );
           });
     }
 
@@ -177,10 +176,17 @@ class _ScheduleState extends State<Schedule> {
                       events.getLength() > 0
                           ? Expanded(
                               child: SingleChildScrollView(
-                                  child: Provider<DateTime>(
-                                      create: (context) => widget._date,
-                                      child: Column(
-                                          children: events.getEvents()))),
+                                  child: MultiProvider(
+                                providers: [
+                                  Provider<DateTime>(
+                                    create: (context) => widget._date,
+                                  ),
+                                  Provider<FlutterLocalNotificationsPlugin>(
+                                    create: (context) => notificationsPlugin,
+                                  )
+                                ],
+                                child: Column(children: events.getEvents()),
+                              )),
                             )
                           : Expanded(
                               child: Container(

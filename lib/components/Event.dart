@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:taskly/classes/Events.dart';
@@ -30,16 +31,9 @@ class Event extends StatefulWidget {
 class _EventState extends State<Event> {
   Events events;
 
-
-  @override
-  void initState(){
-
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    FlutterLocalNotificationsPlugin notificationsPlugin = Provider.of<FlutterLocalNotificationsPlugin>(context);
     DateTime date = Provider.of<DateTime>(context, listen: false);
     User user = Provider.of<User>(context);
     Events events = Provider.of<Events>(context);
@@ -80,7 +74,7 @@ class _EventState extends State<Event> {
                           mainFunction: updateEvent,
                           type: 'update',
                           event: currentEvent,
-                          
+                          notificationsPlugin: notificationsPlugin,
                           );
                     });
               },
